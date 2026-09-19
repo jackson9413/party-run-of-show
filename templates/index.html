@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Party Run-of-Show</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>🎉 Party Run-of-Show</h1>
+  <p class="tagline">Stage the night. Energy arc, conflict-safe, group-fit, minute-by-minute.</p>
+</header>
+
+<main>
+  <section class="card">
+    <h2>1. Tell me about the night</h2>
+    <p class="hint">Free-form is fine — occasion, group size, ages, total minutes, vibe.</p>
+    <textarea id="brief" rows="4" placeholder="e.g. birthday party for my partner, 12 adults, 3 hours, low-key but fun, 7-10pm. Some coworkers coming so keep it conflict-safe."></textarea>
+    <div class="grid">
+      <label>Occasion
+        <select id="occasion">
+          {% for k, v in occasions.items() %}
+            <option value="{{k}}">{{v.label}}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Group size
+        <input type="number" id="group_size" min="2" max="100" placeholder="auto">
+      </label>
+      <label>Total minutes
+        <input type="number" id="total_minutes" min="30" max="600" placeholder="auto">
+      </label>
+      <label>Energy target
+        <select id="energy_target">
+          <option value="">auto</option>
+          <option value="warm">warm</option>
+          <option value="low">low</option>
+          <option value="mid">mid</option>
+          <option value="high">high</option>
+          <option value="peak">peak</option>
+        </select>
+      </label>
+      <label>Ages
+        <select id="ages">
+          <option value="">auto</option>
+          <option value="adults_teens">adults + teens</option>
+          <option value="kids">kids</option>
+        </select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="conflict_safe"> Force conflict-safe (coworkers / in-laws / mixed)
+      </label>
+    </div>
+    <button id="runBtn" class="primary">Build Run-of-Show</button>
+  </section>
+
+  <section id="result" class="hidden">
+    <div class="card">
+      <div class="row">
+        <div>
+          <h2 id="templateLabel"></h2>
+          <p class="meta" id="metaLine"></p>
+        </div>
+        <div class="score-ring-wrap">
+          <svg id="scoreRing" viewBox="0 0 120 120" class="score-ring">
+            <circle cx="60" cy="60" r="52" stroke="#eee" stroke-width="10" fill="none"></circle>
+            <circle id="scoreArc" cx="60" cy="60" r="52" stroke="#6c5ce7" stroke-width="10" fill="none"
+                    stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)" stroke-linecap="round"></circle>
+            <text x="60" y="58" text-anchor="middle" class="score-num" id="scoreNum">0</text>
+            <text x="60" y="78" text-anchor="middle" class="score-label" id="scoreVerdict">—</text>
+          </svg>
+        </div>
+      </div>
+      <div class="axis-bars" id="axisBars"></div>
+    </div>
+
+    <div class="card">
+      <h2>Timeline</h2>
+      <p class="hint">Stages follow a 5-step energy arc — warm → ignite → sustain → release → wind-down.</p>
+      <ol id="timeline" class="timeline"></ol>
+    </div>
+
+    <div class="card">
+      <h2>Insights</h2>
+      <ul id="insights"></ul>
+    </div>
+
+    <div id="flagsCard" class="card hidden">
+      <h2>⚠ Flags</h2>
+      <ul id="flags"></ul>
+    </div>
+
+    <div class="card actions">
+      <button id="saveBtn">⭐ Rate this run-of-show</button>
+      <input type="number" id="rating" min="1" max="5" placeholder="1-5">
+      <input type="text" id="notes" placeholder="optional notes">
+      <a id="exportMd" target="_blank" class="link">Export Markdown</a>
+      <a id="exportJson" target="_blank" class="link">Export JSON</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Recent runs</h2>
+    <ul id="history"></ul>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
